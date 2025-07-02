@@ -18,7 +18,20 @@ static	int ft_format(va_list a, char *s)
 	int	len;
 
 	len = 0;
-	
+	if (s == 'c')
+		len += ft_putchar(va_arg(a, char));
+	else if (s == 's')
+		len += ft_putstr(va_arg(a, char *));
+	else if (s == 'p')
+		len += ft_putptr(va_arg(a, unsigned long long));
+	else if (s == 'd' || s == 'i')
+		len += ft_putnbr(va_arg(a, int));
+	else if (s == 'u')
+		len += ft_put_unsigned(va_arg(a, unsigned int));
+	else if (s == 'x' || s == 'X')
+		len += ft_put_hex(va_arg(a, int), s);
+	else if (s == '%')
+		len += ft_putchar('%');
 	return (len);
 }
 
