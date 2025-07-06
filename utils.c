@@ -1,10 +1,24 @@
-static	int ft_putchar(int c)
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: zedurak <zedurak@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/06 16:22:44 by zedurak           #+#    #+#             */
+/*   Updated: 2025/07/06 18:30:36 by zedurak          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "ft_printf.h"
+
+int	ft_putchar(int c)
 {
 	write(1, &c, 1);
 	return (1);
 }
 
-static	int ft_putstr(char *s)
+int	ft_putstr(char *s)
 {
 	int	len;
 
@@ -22,27 +36,29 @@ static	int ft_putstr(char *s)
 	return (len);
 }
 
-static	int ft_putnbr(long int nbr)
+int	ft_putnbr(int nbr)
 {
-	long int n;
-	int	len;
+	int			len;
 
 	len = 0;
+	if (nbr == -2147483648)
+	{
+		write(1, "-2147483648", 11);
+		return (11);
+	}
 	if (nbr < 0)
 	{
 		len += ft_putchar('-');
-		n =  nbr * (-1);
+		nbr = nbr * (-1);
 	}
-	else
-		n = nbr;
-	if (n > 9)
-		ft_putnbr(n / 10);
-	ft_putchar((n % 10) + 48);
-	len += ft_number_count(n, 10);
+	if (nbr > 9)
+		ft_putnbr(nbr / 10);
+	ft_putchar((nbr % 10) + 48);
+	len += ft_number_count(nbr, 10);
 	return (len);
 }
 
-static	int ft_number_count(long int nbr, int base)
+int	ft_number_count(int nbr, int base)
 {
 	int	len;
 
@@ -57,13 +73,13 @@ static	int ft_number_count(long int nbr, int base)
 	return (len);
 }
 
-static	int ft_put_unsigned(unsigned int unbr)
+int	ft_put_unsigned(unsigned int unbr)
 {
 	int	len;
 
 	len = 0;
-	if (unbr == 0)
-		ft_putchar(0);
-	len = ft_putnbr(unbr);
+	if (unbr >= 10)
+		len += ft_put_unsigned(unbr / 10);
+	len += ft_putchar((unbr % 10) + '0');
 	return (len);
 }
