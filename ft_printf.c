@@ -32,7 +32,6 @@ int	is_error(const char *str)
 			{
 				return (-1);
 			}
-			i++;
 		}
 		i++;
 	}
